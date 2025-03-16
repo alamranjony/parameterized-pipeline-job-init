@@ -15,13 +15,13 @@ pipeline {
       }
     }
 
-    stage('Test') {
+    stage('Unit Test') {
       steps {
         sh "mvn test"
-        junit(testResults: 'target/surefire-reports/TEST-*.xml', keepProperties:true, keepTestNames: true)
+        junit(testResults: 'target/surefire-reports/TEST-*.xml', keepProperties: true, keepTestNames: true)
       }
     }
-
+    
     stage('Local Deployment') {
       steps {
         sh """ java -jar target/hello-demo-*.jar > /dev/null & """
