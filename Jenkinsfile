@@ -15,18 +15,23 @@ pipeline {
       }
     }
 
-    stage('Unit Test') {
+    stage('Test') {
       steps {
-        script {
-          sh "mvn test"
-        }
-
-        junit 'target/surefire-reports/TEST-*.xml'
+        sh "mvn test"
+        junit(TestResults: 'target/surefire-reports/TEST-*.xml', KeepProperties:true, KeepTestNames: true)
       }
     }
 
-  }
-  tools {
-    maven 'M398'
-  }
+    stage('Local Deployment') {
+      steps {
+        sh """ java -jar target/hello-demo-*.jar > /dev/null & """
+      }
+    }
+
+    stage('Integration Testing') {
+      steps {
+        sh 'sleep 5s'
+        sh 'curl -s http://localhost:6767'
+      }
+    }
 }
