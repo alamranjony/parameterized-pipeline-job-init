@@ -34,5 +34,8 @@ pipeline {
         sh 'curl -s http://localhost:6767'
       }
     }
-}
+  }
+  tools {
+    maven 'M398'
+  }
 }
